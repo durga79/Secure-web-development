@@ -131,9 +131,9 @@ export async function POST(request: NextRequest) {
       submission = await prisma.submission.update({
         where: { id: existingSubmission.id },
         data: {
-          content: validatedData.content || existingSubmission.content,
-          fileUrl: validatedData.fileUrl || existingSubmission.fileUrl,
-          fileName: validatedData.fileName || existingSubmission.fileName,
+          content: validatedData.content && validatedData.content !== '' ? validatedData.content : existingSubmission.content,
+          fileUrl: validatedData.fileUrl && validatedData.fileUrl !== '' ? validatedData.fileUrl : existingSubmission.fileUrl,
+          fileName: validatedData.fileName && validatedData.fileName !== '' ? validatedData.fileName : existingSubmission.fileName,
           status: 'SUBMITTED',
         },
         include: {
@@ -163,9 +163,9 @@ export async function POST(request: NextRequest) {
         data: {
           assignmentId: validatedData.assignmentId,
           studentId: sessionData.userId!,
-          content: validatedData.content,
-          fileUrl: validatedData.fileUrl || null,
-          fileName: validatedData.fileName || null,
+          content: validatedData.content && validatedData.content !== '' ? validatedData.content : null,
+          fileUrl: validatedData.fileUrl && validatedData.fileUrl !== '' ? validatedData.fileUrl : null,
+          fileName: validatedData.fileName && validatedData.fileName !== '' ? validatedData.fileName : null,
           status: 'SUBMITTED',
         },
         include: {
