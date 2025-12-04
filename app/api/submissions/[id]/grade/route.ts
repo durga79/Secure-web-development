@@ -79,9 +79,9 @@ export async function PUT(
     }
 
     if (error instanceof ZodError) {
-      logger.error('Grade validation error', { errors: error.errors });
+      logger.error('Grade validation error', { errors: error.issues });
       return NextResponse.json(
-        { error: 'Validation failed', details: error.errors },
+        { error: 'Validation failed', details: error.issues },
         { status: 400 }
       );
     }

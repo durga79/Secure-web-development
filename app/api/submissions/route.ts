@@ -198,9 +198,9 @@ export async function POST(request: NextRequest) {
     }
 
     if (error instanceof ZodError) {
-      logger.error('Submission validation error', { errors: error.errors });
+      logger.error('Submission validation error', { errors: error.issues });
       return NextResponse.json(
-        { error: 'Validation failed', details: error.errors },
+        { error: 'Validation failed', details: error.issues },
         { status: 400 }
       );
     }
