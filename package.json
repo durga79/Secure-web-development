@@ -1,12 +1,18 @@
 {
   "name": "secure-student-portal",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "A secure web application for student course and assignment management",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint .",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma migrate reset",
+    "setup": "npm install && npx prisma generate && npx prisma migrate dev"
   },
   "dependencies": {
     "@prisma/client": "^7.1.0",
@@ -28,5 +34,16 @@
     "prisma": "^7.1.0",
     "tailwindcss": "^4",
     "typescript": "^5"
-  }
+  },
+  "keywords": [
+    "security",
+    "web-development",
+    "nextjs",
+    "prisma",
+    "postgresql",
+    "authentication",
+    "authorization"
+  ],
+  "author": "Your Name",
+  "license": "UNLICENSED"
 }
