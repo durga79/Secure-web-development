@@ -136,7 +136,8 @@ export default function StudentDashboardPage() {
                   {upcomingAssignments.slice(0, 5).map((assignment) => (
                     <div
                       key={assignment.id}
-                      className="p-4 bg-gradient-to-r from-gray-50 to-white rounded-lg border border-gray-200 hover:border-purple-300 transition-colors"
+                      onClick={() => router.push(`/dashboard/student/assignments/${assignment.id}`)}
+                      className="p-4 bg-gradient-to-r from-gray-50 to-white rounded-lg border border-gray-200 hover:border-purple-300 transition-colors cursor-pointer hover:shadow-md"
                     >
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
