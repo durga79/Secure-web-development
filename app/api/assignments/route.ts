@@ -15,6 +15,24 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const courseId = searchParams.get('courseId');
 
+    // If admin and no courseId, return all assignments
+    if (!courseId && sessionData.role === 'ADMIN') {
+      const assignments = await prisma.assignment.findMany({
+        orderBy: { createdAt: 'desc' },
+        include: {
+          course: {
+            select: {
+              id: true,
+              code: true,
+              name: true,
+            },
+          },
+        },
+      });
+      return NextResponse.json({ assignments });
+    }
+
+    // For students or when courseId is specified
     if (!courseId) {
       return NextResponse.json(
         { error: 'courseId is required' },
