@@ -48,7 +48,6 @@ export async function requireAuth(): Promise<SessionData> {
 
 export async function requireAdmin(): Promise<SessionData> {
   const sessionData = await requireAuth();
-  console.log('Session data in requireAdmin:', sessionData);
   if (sessionData.role !== 'ADMIN') {
     throw new Error('Forbidden: Admin access required');
   }
