@@ -90,7 +90,7 @@ export default function StudentDashboardPage() {
             <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent mb-2">
               Student Dashboard
             </h1>
-            <p className="text-gray-600">Welcome back! Here's your learning overview.</p>
+            <p className="text-gray-600">Welcome back! Here&apos;s your learning overview.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -131,7 +131,7 @@ export default function StudentDashboardPage() {
               {upcomingAssignments.length === 0 ? (
                 <div className="text-center py-8">
                   <p className="text-gray-400 mb-2">No upcoming assignments</p>
-                  <p className="text-sm text-gray-500">You're all caught up!</p>
+                  <p className="text-sm text-gray-500">You&apos;re all caught up!</p>
                 </div>
               ) : (
                 <div className="space-y-3">

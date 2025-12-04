@@ -257,7 +257,7 @@ function AssignmentDetail({ params }: { params: Promise<{ id: string }> }) {
               {submission.feedback && (
                 <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-400/30 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                    <span>💬</span> Teacher's Feedback
+                    <span>💬</span> Teacher&apos;s Feedback
                   </h3>
                   <div className="bg-white/5 rounded-lg p-4 border border-white/10">
                     <p className="text-purple-100 whitespace-pre-wrap leading-relaxed">{submission.feedback}</p>

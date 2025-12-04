@@ -393,7 +393,7 @@ function AssignmentsManagement() {
                 ) : submissions.length === 0 ? (
                   <div className="text-center py-12">
                     <p className="text-purple-300 text-lg mb-2">No submissions yet</p>
-                    <p className="text-purple-400 text-sm">Students haven't submitted this assignment</p>
+                    <p className="text-purple-400 text-sm">Students haven&apos;t submitted this assignment</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
