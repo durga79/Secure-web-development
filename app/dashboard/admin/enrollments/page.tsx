@@ -203,11 +203,11 @@ function EnrollmentsManagement() {
                     required
                     value={formData.userId}
                     onChange={(e) => setFormData({ ...formData, userId: e.target.value })}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 [&>option]:bg-slate-800 [&>option]:text-white"
                   >
-                    <option value="">Select a student</option>
+                    <option value="" className="bg-slate-800 text-white">Select a student</option>
                     {users.map((user) => (
-                      <option key={user.id} value={user.id}>
+                      <option key={user.id} value={user.id} className="bg-slate-800 text-white">
                         {user.name} ({user.email})
                       </option>
                     ))}
@@ -219,11 +219,11 @@ function EnrollmentsManagement() {
                     required
                     value={formData.courseId}
                     onChange={(e) => setFormData({ ...formData, courseId: e.target.value })}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 [&>option]:bg-slate-800 [&>option]:text-white"
                   >
-                    <option value="">Select a course</option>
+                    <option value="" className="bg-slate-800 text-white">Select a course</option>
                     {courses.map((course) => (
-                      <option key={course.id} value={course.id}>
+                      <option key={course.id} value={course.id} className="bg-slate-800 text-white">
                         {course.code} - {course.name}
                       </option>
                     ))}
@@ -260,4 +260,5 @@ export default function EnrollmentsPage() {
     </ProtectedRoute>
   );
 }
+
 

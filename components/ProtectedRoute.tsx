@@ -7,9 +7,10 @@ import { useAuth } from './AuthProvider';
 interface ProtectedRouteProps {
   children: React.ReactNode;
   requiredRole?: 'STUDENT' | 'ADMIN';
+  allowedRoles?: Array<'STUDENT' | 'ADMIN'>;
 }
 
-export default function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
+export default function ProtectedRoute({ children, requiredRole, allowedRoles }: ProtectedRouteProps) {
   const { user, loading } = useAuth();
   const router = useRouter();
 
@@ -19,9 +20,11 @@ export default function ProtectedRoute({ children, requiredRole }: ProtectedRout
         router.push('/auth/login');
       } else if (requiredRole && user.role !== requiredRole) {
         router.push('/dashboard');
+      } else if (allowedRoles && !allowedRoles.includes(user.role as 'STUDENT' | 'ADMIN')) {
+        router.push('/dashboard');
       }
     }
-  }, [user, loading, requiredRole, router]);
+  }, [user, loading, requiredRole, allowedRoles, router]);
 
   if (loading) {
     return (
@@ -31,7 +34,7 @@ export default function ProtectedRoute({ children, requiredRole }: ProtectedRout
     );
   }
 
-  if (!user || (requiredRole && user.role !== requiredRole)) {
+  if (!user || (requiredRole && user.role !== requiredRole) || (allowedRoles && !allowedRoles.includes(user.role as 'STUDENT' | 'ADMIN'))) {
     return null;
   }
 

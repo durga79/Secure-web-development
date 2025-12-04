@@ -72,7 +72,7 @@ export default function StudentDashboardPage() {
 
   if (loading) {
     return (
-      <ProtectedRoute requiredRole="STUDENT">
+      <ProtectedRoute allowedRoles={['STUDENT']}>
         <Navbar />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-lg">Loading...</div>
@@ -82,7 +82,7 @@ export default function StudentDashboardPage() {
   }
 
   return (
-    <ProtectedRoute requiredRole="STUDENT">
+    <ProtectedRoute allowedRoles={['STUDENT']}>
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
         <Navbar />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -199,6 +199,9 @@ export default function StudentDashboardPage() {
                       <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                         Grade
                       </th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                        Feedback
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
@@ -228,6 +231,21 @@ export default function StudentDashboardPage() {
                             <span className="font-bold text-indigo-600">{submission.grade}%</span>
                           ) : (
                             <span className="text-gray-400">-</span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          {submission.feedback ? (
+                            <div className="group relative inline-block">
+                              <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium cursor-help">
+                                💬 View
+                              </span>
+                              <div className="invisible group-hover:visible absolute z-10 left-0 top-8 w-64 p-3 bg-gray-800 text-white text-xs rounded-lg shadow-xl">
+                                <div className="font-semibold mb-1">Feedback:</div>
+                                <div className="max-h-32 overflow-y-auto">{submission.feedback}</div>
+                              </div>
+                            </div>
+                          ) : (
+                            <span className="text-gray-400 text-xs">No feedback</span>
                           )}
                         </td>
                       </tr>

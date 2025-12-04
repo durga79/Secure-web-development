@@ -20,11 +20,11 @@ type Assignment = {
 
 type Submission = {
   id: string;
-  content: string;
-  fileUrl?: string;
-  fileName?: string;
-  grade?: number;
-  feedback?: string;
+  content: string | null;
+  fileUrl?: string | null;
+  fileName?: string | null;
+  grade?: number | null;
+  feedback?: string | null;
   status: string;
   createdAt: string;
 };
@@ -36,6 +36,9 @@ function AssignmentDetail({ params }: { params: Promise<{ id: string }> }) {
   const [loading, setLoading] = useState(true);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [formData, setFormData] = useState({ content: '', fileUrl: '', fileName: '' });
+  const [uploading, setUploading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<{ file: File; url: string; fileName: string } | null>(null);
+  const [externalLink, setExternalLink] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -64,21 +67,66 @@ function AssignmentDetail({ params }: { params: Promise<{ id: string }> }) {
     }
   };
 
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+
+    try {
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', file);
+      uploadFormData.append('type', 'submission');
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setSelectedFile({
+          file: file,
+          url: data.fileUrl,
+          fileName: data.fileName,
+        });
+        setExternalLink(''); // Clear external link when file is uploaded
+      } else {
+        const error = await res.json();
+        alert(error.error || 'Failed to upload file');
+        setSelectedFile(null);
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      alert('Failed to upload file');
+      setSelectedFile(null);
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      // Determine which file data to use
+      const submissionData = {
+        assignmentId: resolvedParams.id,
+        content: formData.content,
+        fileUrl: selectedFile ? selectedFile.url : externalLink,
+        fileName: selectedFile ? selectedFile.fileName : '',
+      };
+
       const res = await fetch('/api/submissions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          assignmentId: resolvedParams.id,
-          ...formData,
-        }),
+        body: JSON.stringify(submissionData),
       });
 
       if (res.ok) {
         setShowSubmitModal(false);
         setFormData({ content: '', fileUrl: '', fileName: '' });
+        setSelectedFile(null);
+        setExternalLink('');
         fetchAssignmentAndSubmission();
       } else {
         const error = await res.json();
@@ -198,16 +246,22 @@ function AssignmentDetail({ params }: { params: Promise<{ id: string }> }) {
               )}
 
               {submission.grade !== null && submission.grade !== undefined && (
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Grade</h3>
-                  <p className="text-3xl font-bold text-green-300">{submission.grade}/100</p>
+                <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-400/30 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+                    <span>🎯</span> Grade
+                  </h3>
+                  <p className="text-4xl font-bold text-green-300">{submission.grade}/100</p>
                 </div>
               )}
 
               {submission.feedback && (
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Feedback</h3>
-                  <p className="text-purple-200 whitespace-pre-wrap">{submission.feedback}</p>
+                <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-400/30 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                    <span>💬</span> Teacher's Feedback
+                  </h3>
+                  <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                    <p className="text-purple-100 whitespace-pre-wrap leading-relaxed">{submission.feedback}</p>
+                  </div>
                 </div>
               )}
 
@@ -225,7 +279,7 @@ function AssignmentDetail({ params }: { params: Promise<{ id: string }> }) {
                 <h2 className="text-2xl font-bold text-white">Submit Assignment</h2>
                 <p className="text-purple-300 mt-1">{assignment.title}</p>
               </div>
-              <form onSubmit={handleSubmit} className="p-6 space-y-4">
+              <form onSubmit={handleSubmit} className="p-6 space-y-6">
                 <div>
                   <label className="block text-purple-200 mb-2 font-medium">
                     Submission Content
@@ -234,45 +288,79 @@ function AssignmentDetail({ params }: { params: Promise<{ id: string }> }) {
                     value={formData.content}
                     onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                     className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    placeholder="Describe your submission, add notes, or provide context..."
+                    placeholder="Submitedd assignment"
                     rows={5}
                   />
                 </div>
 
-                <div>
-                  <label className="block text-purple-200 mb-2 font-medium">
-                    Submission File Link
-                    <span className="text-sm text-purple-400 ml-2">Upload to Google Drive, then paste link here</span>
-                  </label>
-                  <input
-                    type="url"
-                    value={formData.fileUrl}
-                    onChange={(e) => setFormData({ ...formData, fileUrl: e.target.value })}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    placeholder="https://drive.google.com/file/d/..."
-                  />
-                  <p className="text-xs text-purple-300 mt-1">
-                    1. Upload your file to Google Drive<br />
-                    2. Right-click → Get link → Anyone with link can view<br />
-                    3. Paste the link above
-                  </p>
+                <div className="bg-white/5 rounded-lg p-4 space-y-4">
+                  <div>
+                    <label className="block text-purple-200 mb-2 font-medium">
+                      Upload File
+                      <span className="text-sm text-purple-400 ml-2">PDF, Word, Excel, Images (Max 10MB)</span>
+                    </label>
+                    <input
+                      type="file"
+                      onChange={handleFileSelect}
+                      accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.jpg,.jpeg,.png"
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-500 file:text-white hover:file:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      disabled={uploading || !!externalLink}
+                    />
+                    {uploading && (
+                      <p className="text-xs text-yellow-300 mt-2 flex items-center gap-2">
+                        <span className="animate-spin">⏳</span> Uploading file...
+                      </p>
+                    )}
+                    {selectedFile && !uploading && (
+                      <div className="mt-2 flex items-center justify-between bg-green-500/10 border border-green-400/30 rounded-lg p-3">
+                        <p className="text-xs text-green-300 flex items-center gap-2">
+                          <span>✓</span> {selectedFile.fileName} uploaded successfully
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedFile(null)}
+                          className="text-xs text-red-300 hover:text-red-200 underline"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Divider */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 h-px bg-white/10"></div>
+                    <span className="text-xs text-purple-300 font-medium">OR</span>
+                    <div className="flex-1 h-px bg-white/10"></div>
+                  </div>
+
+                  <div>
+                    <label className="block text-purple-200 mb-2 font-medium">
+                      Or External File Link (Optional)
+                    </label>
+                    <input
+                      type="url"
+                      value={externalLink}
+                      onChange={(e) => setExternalLink(e.target.value)}
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      placeholder="https://drive.google.com/file/d/..."
+                      disabled={!!selectedFile}
+                    />
+                    <p className="text-xs text-purple-300 mt-2">
+                      Or paste a Google Drive / Dropbox link below
+                    </p>
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-purple-200 mb-2 font-medium">File Name (Optional)</label>
-                  <input
-                    type="text"
-                    value={formData.fileName}
-                    onChange={(e) => setFormData({ ...formData, fileName: e.target.value })}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    placeholder="e.g., John_Assignment1.pdf"
-                  />
-                </div>
-
-                <div className="flex gap-3 pt-4">
+                <div className="flex gap-3 pt-2">
                   <button
                     type="button"
-                    onClick={() => setShowSubmitModal(false)}
+                    onClick={() => {
+                      setShowSubmitModal(false);
+                      setFormData({ content: '', fileUrl: '', fileName: '' });
+                      setSelectedFile(null);
+                      setExternalLink('');
+                    }}
                     className="flex-1 px-4 py-3 bg-white/10 text-purple-200 rounded-lg hover:bg-white/20 transition-colors border border-white/20"
                   >
                     Cancel
@@ -300,4 +388,5 @@ export default function AssignmentPage({ params }: { params: Promise<{ id: strin
     </ProtectedRoute>
   );
 }
+
 
