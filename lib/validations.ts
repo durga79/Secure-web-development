@@ -46,8 +46,8 @@ export const assignmentSchema = z.object({
 export const submissionSchema = z.object({
   assignmentId: z.string().uuid(),
   content: z.string().optional(),
-  fileUrl: z.string().url().optional().or(z.literal('')),
-  fileName: z.string().optional(),
+  fileUrl: z.string().optional().transform(val => val === '' ? undefined : val),
+  fileName: z.string().optional().transform(val => val === '' ? undefined : val),
 });
 
 export const gradeSubmissionSchema = z.object({
