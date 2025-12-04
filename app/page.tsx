@@ -9,9 +9,9 @@ export default function Home() {
           <div className="max-w-7xl mx-auto flex justify-between items-center">
             <div className="flex items-center space-x-2">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">SP</span>
+                <span className="text-white font-bold text-xl">SH</span>
               </div>
-              <span className="text-white font-bold text-xl">Secure Portal</span>
+              <span className="text-white font-bold text-xl">ScholarHub</span>
             </div>
             <div className="flex gap-4">
               <Link
@@ -33,7 +33,7 @@ export default function Home() {
         <main className="max-w-7xl mx-auto px-4 py-20">
           <div className="text-center mb-16">
             <h1 className="text-6xl font-bold text-white mb-6 leading-tight">
-              Secure Student Portal
+              ScholarHub
             </h1>
             <p className="text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
               A modern, secure platform for managing courses, assignments, and academic progress
@@ -153,7 +153,7 @@ export default function Home() {
         </main>
 
         <footer className="text-center text-blue-200 py-8 mt-16">
-          <p>© 2025 Secure Student Portal. Built with security in mind.</p>
+          <p>© 2025 ScholarHub. Built with security in mind.</p>
         </footer>
       </div>
     </div>

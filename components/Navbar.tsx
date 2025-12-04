@@ -12,10 +12,10 @@ export default function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">SP</span>
+              <span className="text-white font-bold text-xl">SH</span>
             </div>
             <Link href="/dashboard" className="text-xl font-bold hover:text-blue-200 transition-colors">
-              Secure Student Portal
+              ScholarHub
             </Link>
           </div>
 

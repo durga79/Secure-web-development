@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Secure Student Portal",
-  description: "A secure web application for student course management",
+  title: "ScholarHub",
+  description: "ScholarHub - A secure web application for student course and assignment management",
 };
 
 export default function RootLayout({

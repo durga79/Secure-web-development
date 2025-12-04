@@ -1,4 +1,4 @@
-# Secure Student Portal
+# ScholarHub
 
 A secure web application for managing student courses, assignments, and submissions with enterprise-level security features.
 
@@ -16,7 +16,7 @@ A secure web application for managing student courses, assignments, and submissi
 
 ## 🎯 Project Overview
 
-This project is a secure student portal developed as part of the Secure Web Development course at National College of Ireland. It demonstrates comprehensive security practices throughout the software development lifecycle, from design to deployment.
+ScholarHub is a secure student portal developed as part of the Secure Web Development course at National College of Ireland. It demonstrates comprehensive security practices throughout the software development lifecycle, from design to deployment.
 
 The application supports two user roles:
 - **Students**: Can view enrolled courses, assignments, and submit their work
