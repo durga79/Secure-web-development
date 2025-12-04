@@ -7,11 +7,11 @@ import { userUpdateSchema } from '@/lib/validations';
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ userId: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin();
-    const { userId } = await params;
+    const { id: userId } = await params;
 
     const body = await request.json();
     const validatedData = userUpdateSchema.parse(body);
@@ -43,11 +43,11 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ userId: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin();
-    const { userId } = await params;
+    const { id: userId } = await params;
 
     await prisma.user.delete({
       where: { id: userId },
