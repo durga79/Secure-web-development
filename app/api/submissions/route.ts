@@ -124,43 +124,72 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    let submission;
+    
     if (existingSubmission) {
-      return NextResponse.json(
-        { error: 'You have already submitted this assignment' },
-        { status: 400 }
-      );
+      // Update existing submission
+      submission = await prisma.submission.update({
+        where: { id: existingSubmission.id },
+        data: {
+          content: validatedData.content || existingSubmission.content,
+          fileUrl: validatedData.fileUrl || existingSubmission.fileUrl,
+          fileName: validatedData.fileName || existingSubmission.fileName,
+          status: 'SUBMITTED',
+        },
+        include: {
+          assignment: {
+            include: {
+              course: true,
+            },
+          },
+          student: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+        },
+      });
+
+      logger.security('Assignment resubmitted', {
+        submissionId: submission.id,
+        assignmentId: submission.assignmentId,
+        studentId: submission.studentId,
+      });
+    } else {
+      // Create new submission
+      submission = await prisma.submission.create({
+        data: {
+          assignmentId: validatedData.assignmentId,
+          studentId: sessionData.userId!,
+          content: validatedData.content,
+          fileUrl: validatedData.fileUrl || null,
+          fileName: validatedData.fileName || null,
+          status: 'SUBMITTED',
+        },
+        include: {
+          assignment: {
+            include: {
+              course: true,
+            },
+          },
+          student: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+        },
+      });
+
+      logger.security('Assignment submitted', {
+        submissionId: submission.id,
+        assignmentId: submission.assignmentId,
+        studentId: submission.studentId,
+      });
     }
-
-    const submission = await prisma.submission.create({
-      data: {
-        assignmentId: validatedData.assignmentId,
-        studentId: sessionData.userId!,
-        content: validatedData.content,
-        fileUrl: validatedData.fileUrl || null,
-        fileName: validatedData.fileName || null,
-        status: 'PENDING',
-      },
-      include: {
-        assignment: {
-          include: {
-            course: true,
-          },
-        },
-        student: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-      },
-    });
-
-    logger.security('Assignment submitted', {
-      submissionId: submission.id,
-      assignmentId: submission.assignmentId,
-      studentId: submission.studentId,
-    });
 
     return NextResponse.json({ submission }, { status: 201 });
   } catch (error) {
