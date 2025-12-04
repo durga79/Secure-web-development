@@ -107,6 +107,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (error instanceof ZodError) {
+      logger.error('Assignment validation error', { errors: error.errors });
       return NextResponse.json(
         { error: 'Validation failed', details: error.errors },
         { status: 400 }

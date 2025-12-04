@@ -36,9 +36,9 @@ export const courseSchema = z.object({
 
 export const assignmentSchema = z.object({
   courseId: z.string().uuid(),
-  title: z.string().min(3).max(200),
+  title: z.string().min(1).max(200),
   description: z.string().optional(),
-  dueDate: z.string().datetime().optional(),
+  dueDate: z.string().optional(),
 });
 
 export const submissionSchema = z.object({
