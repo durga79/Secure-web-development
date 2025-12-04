@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
@@ -43,6 +44,7 @@ interface Submission {
 }
 
 export default function StudentDashboardPage() {
+  const router = useRouter();
   const [enrollments, setEnrollments] = useState<{ course: Course }[]>([]);
   const [upcomingAssignments, setUpcomingAssignments] = useState<Assignment[]>([]);
   const [recentSubmissions, setRecentSubmissions] = useState<Submission[]>([]);
