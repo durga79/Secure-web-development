@@ -39,11 +39,15 @@ export const assignmentSchema = z.object({
   title: z.string().min(1).max(200),
   description: z.string().optional(),
   dueDate: z.string().optional(),
+  fileUrl: z.string().url().optional().or(z.literal('')),
+  fileName: z.string().optional(),
 });
 
 export const submissionSchema = z.object({
   assignmentId: z.string().uuid(),
   content: z.string().optional(),
+  fileUrl: z.string().url().optional().or(z.literal('')),
+  fileName: z.string().optional(),
 });
 
 export const gradeSubmissionSchema = z.object({

@@ -10,6 +10,8 @@ type Assignment = {
   description: string;
   dueDate: string;
   courseId: string;
+  fileUrl?: string;
+  fileName?: string;
   course?: {
     code: string;
     name: string;
@@ -31,7 +33,9 @@ function AssignmentsManagement() {
     title: '', 
     description: '', 
     dueDate: '', 
-    courseId: '' 
+    courseId: '',
+    fileUrl: '',
+    fileName: ''
   });
   const router = useRouter();
 
@@ -73,7 +77,7 @@ function AssignmentsManagement() {
 
       if (res.ok) {
         setShowAddModal(false);
-        setFormData({ title: '', description: '', dueDate: '', courseId: '' });
+        setFormData({ title: '', description: '', dueDate: '', courseId: '', fileUrl: '', fileName: '' });
         fetchData();
       }
     } catch (error) {
@@ -141,6 +145,18 @@ function AssignmentsManagement() {
                     )}
                   </div>
                   <p className="text-purple-200 mb-3">{assignment.description}</p>
+                  {assignment.fileUrl && (
+                    <div className="mb-3">
+                      <a
+                        href={assignment.fileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-blue-500/20 text-blue-300 rounded-lg hover:bg-blue-500/30 transition-colors border border-blue-500/50 text-sm"
+                      >
+                        📄 {assignment.fileName || 'Download Assignment File'}
+                      </a>
+                    </div>
+                  )}
                   <div className="flex items-center gap-4 text-sm">
                     <span className="text-purple-300">
                       Due: {new Date(assignment.dueDate).toLocaleDateString()}
@@ -221,6 +237,32 @@ function AssignmentsManagement() {
                     value={formData.dueDate}
                     onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
                     className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-purple-200 mb-2 font-medium">
+                    Assignment File Link (Optional)
+                    <span className="text-sm text-purple-400 ml-2">Google Drive, Dropbox, etc.</span>
+                  </label>
+                  <input
+                    type="url"
+                    value={formData.fileUrl}
+                    onChange={(e) => setFormData({ ...formData, fileUrl: e.target.value })}
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="https://drive.google.com/file/d/..."
+                  />
+                  <p className="text-xs text-purple-300 mt-1">
+                    Upload your file to Google Drive, get shareable link, and paste it here
+                  </p>
+                </div>
+                <div>
+                  <label className="block text-purple-200 mb-2 font-medium">File Name (Optional)</label>
+                  <input
+                    type="text"
+                    value={formData.fileName}
+                    onChange={(e) => setFormData({ ...formData, fileName: e.target.value })}
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="e.g., Assignment1.pdf"
                   />
                 </div>
                 <div className="flex gap-3 pt-4">

@@ -56,6 +56,8 @@ model Assignment {
   title       String
   description String?
   dueDate     DateTime? @map("due_date")
+  fileUrl     String?   @map("file_url")
+  fileName    String?   @map("file_name")
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
 
@@ -70,6 +72,8 @@ model Submission {
   assignmentId String           @map("assignment_id")
   studentId    String           @map("student_id")
   content      String?
+  fileUrl      String?          @map("file_url")
+  fileName     String?          @map("file_name")
   grade        Float?
   feedback     String?
   status       SubmissionStatus @default(PENDING)

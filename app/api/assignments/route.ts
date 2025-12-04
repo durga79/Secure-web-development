@@ -103,6 +103,8 @@ export async function POST(request: NextRequest) {
         title: validatedData.title,
         description: validatedData.description,
         dueDate: validatedData.dueDate ? new Date(validatedData.dueDate) : null,
+        fileUrl: validatedData.fileUrl || null,
+        fileName: validatedData.fileName || null,
       },
       include: {
         course: true,
