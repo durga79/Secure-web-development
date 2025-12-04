@@ -34,23 +34,31 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-lg shadow-md p-8">
-          <h1 className="text-2xl font-bold text-center mb-6">
-            Secure Student Portal
-          </h1>
-          <h2 className="text-xl font-semibold text-center mb-6">Register</h2>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 flex items-center justify-center px-4 py-12">
+      <div className="absolute inset-0 bg-black opacity-50"></div>
+      
+      <div className="relative z-10 w-full max-w-md">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center space-x-2 mb-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-xl flex items-center justify-center">
+              <span className="text-white font-bold text-2xl">SP</span>
+            </div>
+            <span className="text-white font-bold text-2xl">Secure Portal</span>
+          </div>
+          <h1 className="text-3xl font-bold text-white">Create Account</h1>
+          <p className="text-blue-100 mt-2">Join us and start your learning journey</p>
+        </div>
 
+        <div className="bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-white/20">
           {error && (
-            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+            <div className="mb-6 p-4 bg-red-500/20 border border-red-400/50 text-red-100 rounded-lg backdrop-blur-sm">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium mb-1">
+              <label htmlFor="name" className="block text-sm font-semibold mb-2 text-white">
                 Full Name
               </label>
               <input
@@ -59,14 +67,14 @@ export default function RegisterPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-white placeholder-blue-200"
                 placeholder="John Doe"
               />
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-1">
-                Email
+              <label htmlFor="email" className="block text-sm font-semibold mb-2 text-white">
+                Email Address
               </label>
               <input
                 type="email"
@@ -74,13 +82,13 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-white placeholder-blue-200"
                 placeholder="your.email@example.com"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium mb-1">
+              <label htmlFor="password" className="block text-sm font-semibold mb-2 text-white">
                 Password
               </label>
               <input
@@ -89,16 +97,16 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Min 8 chars, 1 upper, 1 lower, 1 number"
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-white placeholder-blue-200"
+                placeholder="Create a strong password"
               />
-              <p className="mt-1 text-xs text-gray-500">
-                Must be at least 8 characters with uppercase, lowercase, and number
+              <p className="mt-2 text-xs text-blue-200">
+                Min 8 characters with uppercase, lowercase, and number
               </p>
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium mb-1">
+              <label htmlFor="confirmPassword" className="block text-sm font-semibold mb-2 text-white">
                 Confirm Password
               </label>
               <input
@@ -107,7 +115,7 @@ export default function RegisterPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-white placeholder-blue-200"
                 placeholder="Re-enter your password"
               />
             </div>
@@ -115,18 +123,29 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-blue-500/50 transform hover:-translate-y-0.5"
             >
-              {loading ? 'Registering...' : 'Register'}
+              {loading ? 'Creating Account...' : 'Create Account'}
             </button>
           </form>
 
-          <p className="mt-4 text-center text-sm text-gray-600">
-            Already have an account?{' '}
-            <Link href="/auth/login" className="text-blue-600 hover:underline">
-              Login here
+          <div className="mt-6 text-center">
+            <p className="text-blue-100">
+              Already have an account?{' '}
+              <Link href="/auth/login" className="text-white font-semibold hover:text-blue-200 transition-colors">
+                Sign in
+              </Link>
+            </p>
+          </div>
+
+          <div className="mt-6 pt-6 border-t border-white/10">
+            <Link
+              href="/"
+              className="block text-center text-blue-200 hover:text-white transition-colors text-sm"
+            >
+              ← Back to Home
             </Link>
-          </p>
+          </div>
         </div>
       </div>
     </div>

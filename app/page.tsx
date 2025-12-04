@@ -2,68 +2,160 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
-      <main className="max-w-4xl mx-auto px-4 py-16 text-center">
-        <h1 className="text-5xl font-bold text-gray-900 mb-6">
-          Secure Student Portal
-        </h1>
-        <p className="text-xl text-gray-700 mb-8">
-          A secure web application for managing student courses, assignments, and submissions
-        </p>
-        
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-          <Link
-            href="/auth/login"
-            className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-          >
-            Login
-          </Link>
-          <Link
-            href="/auth/register"
-            className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold border-2 border-blue-600 hover:bg-blue-50 transition-colors"
-          >
-            Register
-          </Link>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-lg p-8 mt-12">
-          <h2 className="text-2xl font-bold mb-4">Key Security Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-            <div>
-              <h3 className="font-semibold text-lg mb-2">🔐 Authentication & Authorization</h3>
-              <ul className="text-sm text-gray-600 space-y-1">
-                <li>• Secure password hashing with bcrypt</li>
-                <li>• Role-based access control (Student/Admin)</li>
-                <li>• HTTP-only secure session cookies</li>
-              </ul>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900">
+      <div className="absolute inset-0 bg-black opacity-50"></div>
+      <div className="relative z-10">
+        <nav className="px-6 py-4">
+          <div className="max-w-7xl mx-auto flex justify-between items-center">
+            <div className="flex items-center space-x-2">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xl">SP</span>
+              </div>
+              <span className="text-white font-bold text-xl">Secure Portal</span>
             </div>
-            <div>
-              <h3 className="font-semibold text-lg mb-2">✅ Input Validation</h3>
-              <ul className="text-sm text-gray-600 space-y-1">
-                <li>• Zod schema validation on all inputs</li>
-                <li>• SQL injection prevention via Prisma ORM</li>
-                <li>• XSS protection through sanitization</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold text-lg mb-2">🛡️ Security Headers</h3>
-              <ul className="text-sm text-gray-600 space-y-1">
-                <li>• X-Frame-Options, X-XSS-Protection</li>
-                <li>• Content Security Policy</li>
-                <li>• Strict-Transport-Security</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold text-lg mb-2">📊 Auditing & Logging</h3>
-              <ul className="text-sm text-gray-600 space-y-1">
-                <li>• Comprehensive security event logging</li>
-                <li>• Failed login attempt tracking</li>
-                <li>• Admin action auditing</li>
-              </ul>
+            <div className="flex gap-4">
+              <Link
+                href="/auth/login"
+                className="text-white hover:text-blue-200 transition-colors font-medium"
+              >
+                Login
+              </Link>
+              <Link
+                href="/auth/register"
+                className="bg-white text-blue-900 px-6 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl"
+              >
+                Get Started
+              </Link>
             </div>
           </div>
-        </div>
-      </main>
+        </nav>
+
+        <main className="max-w-7xl mx-auto px-4 py-20">
+          <div className="text-center mb-16">
+            <h1 className="text-6xl font-bold text-white mb-6 leading-tight">
+              Secure Student Portal
+            </h1>
+            <p className="text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
+              A modern, secure platform for managing courses, assignments, and academic progress
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <Link
+                href="/auth/register"
+                className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-10 py-4 rounded-xl font-bold text-lg hover:from-blue-600 hover:to-indigo-700 transition-all shadow-2xl hover:shadow-blue-500/50 transform hover:-translate-y-1"
+              >
+                Start Learning Today
+              </Link>
+              <Link
+                href="/auth/login"
+                className="bg-white/10 backdrop-blur-lg text-white px-10 py-4 rounded-xl font-bold text-lg border-2 border-white/20 hover:bg-white/20 transition-all"
+              >
+                Sign In
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 hover:bg-white/15 transition-all">
+              <div className="w-14 h-14 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center mb-4">
+                <span className="text-3xl">📚</span>
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-3">Course Management</h3>
+              <p className="text-blue-100">
+                Access all your enrolled courses, track progress, and stay organized with our intuitive interface
+              </p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 hover:bg-white/15 transition-all">
+              <div className="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl flex items-center justify-center mb-4">
+                <span className="text-3xl">✍️</span>
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-3">Submit Assignments</h3>
+              <p className="text-blue-100">
+                Submit your work, track deadlines, and receive feedback all in one secure platform
+              </p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 hover:bg-white/15 transition-all">
+              <div className="w-14 h-14 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center mb-4">
+                <span className="text-3xl">🔒</span>
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-3">Enterprise Security</h3>
+              <p className="text-blue-100">
+                Your data is protected with industry-leading security practices and encryption
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-10 border border-white/20">
+            <h2 className="text-3xl font-bold text-white mb-8 text-center">Security Features</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <div>
+                    <h4 className="text-white font-semibold mb-1">Encrypted Authentication</h4>
+                    <p className="text-blue-100 text-sm">Bcrypt password hashing with 12 salt rounds</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <div>
+                    <h4 className="text-white font-semibold mb-1">Role-Based Access Control</h4>
+                    <p className="text-blue-100 text-sm">Separate permissions for students and administrators</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <div>
+                    <h4 className="text-white font-semibold mb-1">SQL Injection Prevention</h4>
+                    <p className="text-blue-100 text-sm">Prisma ORM with parameterized queries</p>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <div>
+                    <h4 className="text-white font-semibold mb-1">XSS & CSRF Protection</h4>
+                    <p className="text-blue-100 text-sm">Multiple layers of defense against common attacks</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <div>
+                    <h4 className="text-white font-semibold mb-1">Comprehensive Logging</h4>
+                    <p className="text-blue-100 text-sm">Security event tracking and audit trails</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <div>
+                    <h4 className="text-white font-semibold mb-1">Security Headers</h4>
+                    <p className="text-blue-100 text-sm">HTTP security headers for additional protection</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <footer className="text-center text-blue-200 py-8 mt-16">
+          <p>© 2025 Secure Student Portal. Built with security in mind.</p>
+        </footer>
+      </div>
     </div>
   );
 }

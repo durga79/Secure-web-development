@@ -81,120 +81,159 @@ export default function StudentDashboardPage() {
 
   return (
     <ProtectedRoute requiredRole="STUDENT">
-      <Navbar />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-bold mb-8">Student Dashboard</h1>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4">My Courses</h2>
-            {enrollments.length === 0 ? (
-              <p className="text-gray-500">No courses enrolled yet</p>
-            ) : (
-              <div className="space-y-3">
-                {enrollments.map((enrollment) => (
-                  <div
-                    key={enrollment.course.id}
-                    className="p-3 border border-gray-200 rounded hover:bg-gray-50"
-                  >
-                    <h3 className="font-semibold">{enrollment.course.code}</h3>
-                    <p className="text-sm text-gray-600">{enrollment.course.name}</p>
-                  </div>
-                ))}
-              </div>
-            )}
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+        <Navbar />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent mb-2">
+              Student Dashboard
+            </h1>
+            <p className="text-gray-600">Welcome back! Here's your learning overview.</p>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4">Upcoming Assignments</h2>
-            {upcomingAssignments.length === 0 ? (
-              <p className="text-gray-500">No upcoming assignments</p>
-            ) : (
-              <div className="space-y-3">
-                {upcomingAssignments.slice(0, 5).map((assignment) => (
-                  <div
-                    key={assignment.id}
-                    className="p-3 border border-gray-200 rounded hover:bg-gray-50"
-                  >
-                    <h3 className="font-semibold">{assignment.title}</h3>
-                    <p className="text-sm text-gray-600">
-                      {assignment.course.code} - {assignment.course.name}
-                    </p>
-                    {assignment.dueDate && (
-                      <p className="text-xs text-gray-500 mt-1">
-                        Due: {new Date(assignment.dueDate).toLocaleDateString()}
-                      </p>
-                    )}
-                    {assignment.submission ? (
-                      <span className="inline-block mt-2 px-2 py-1 bg-green-100 text-green-800 text-xs rounded">
-                        Submitted
-                      </span>
-                    ) : (
-                      <span className="inline-block mt-2 px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">
-                        Pending
-                      </span>
-                    )}
-                  </div>
-                ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold text-gray-800">My Courses</h2>
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white text-xl">📚</span>
+                </div>
               </div>
-            )}
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">Recent Submissions</h2>
-          {recentSubmissions.length === 0 ? (
-            <p className="text-gray-500">No submissions yet</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Assignment
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Course
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Status
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Grade
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {recentSubmissions.map((submission) => (
-                    <tr key={submission.id}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        {submission.assignment.title}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        {submission.assignment.course.code}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <span
-                          className={`px-2 py-1 rounded text-xs ${
-                            submission.status === 'GRADED'
-                              ? 'bg-green-100 text-green-800'
-                              : submission.status === 'SUBMITTED'
-                              ? 'bg-blue-100 text-blue-800'
-                              : 'bg-gray-100 text-gray-800'
-                          }`}
-                        >
-                          {submission.status}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        {submission.grade !== null ? `${submission.grade}%` : '-'}
-                      </td>
-                    </tr>
+              {enrollments.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-gray-400 mb-2">No courses enrolled yet</p>
+                  <p className="text-sm text-gray-500">Contact your administrator to get enrolled</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {enrollments.map((enrollment) => (
+                    <div
+                      key={enrollment.course.id}
+                      className="p-4 border-l-4 border-blue-500 bg-gradient-to-r from-blue-50 to-transparent rounded-r-lg hover:from-blue-100 transition-colors"
+                    >
+                      <h3 className="font-bold text-gray-800">{enrollment.course.code}</h3>
+                      <p className="text-sm text-gray-600 mt-1">{enrollment.course.name}</p>
+                    </div>
                   ))}
-                </tbody>
-              </table>
+                </div>
+              )}
             </div>
-          )}
+
+            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold text-gray-800">Upcoming Assignments</h2>
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white text-xl">📝</span>
+                </div>
+              </div>
+              {upcomingAssignments.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-gray-400 mb-2">No upcoming assignments</p>
+                  <p className="text-sm text-gray-500">You're all caught up!</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {upcomingAssignments.slice(0, 5).map((assignment) => (
+                    <div
+                      key={assignment.id}
+                      className="p-4 bg-gradient-to-r from-gray-50 to-white rounded-lg border border-gray-200 hover:border-purple-300 transition-colors"
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <h3 className="font-bold text-gray-800">{assignment.title}</h3>
+                          <p className="text-sm text-gray-600 mt-1">
+                            {assignment.course.code} - {assignment.course.name}
+                          </p>
+                          {assignment.dueDate && (
+                            <p className="text-xs text-gray-500 mt-2">
+                              📅 Due: {new Date(assignment.dueDate).toLocaleDateString()}
+                            </p>
+                          )}
+                        </div>
+                        {assignment.submission ? (
+                          <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
+                            ✓ Submitted
+                          </span>
+                        ) : (
+                          <span className="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full">
+                            ⏳ Pending
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-gray-800">Recent Submissions</h2>
+              <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-600 rounded-lg flex items-center justify-center">
+                <span className="text-white text-xl">📊</span>
+              </div>
+            </div>
+            {recentSubmissions.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-gray-400 mb-2">No submissions yet</p>
+                <p className="text-sm text-gray-500">Start by submitting your first assignment</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full">
+                  <thead>
+                    <tr className="border-b border-gray-200">
+                      <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                        Assignment
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                        Course
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                        Grade
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {recentSubmissions.map((submission) => (
+                      <tr key={submission.id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-6 py-4 text-sm font-medium text-gray-800">
+                          {submission.assignment.title}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600">
+                          {submission.assignment.course.code}
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                              submission.status === 'GRADED'
+                                ? 'bg-green-100 text-green-700'
+                                : submission.status === 'SUBMITTED'
+                                ? 'bg-blue-100 text-blue-700'
+                                : 'bg-gray-100 text-gray-700'
+                            }`}
+                          >
+                            {submission.status}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          {submission.grade !== null ? (
+                            <span className="font-bold text-indigo-600">{submission.grade}%</span>
+                          ) : (
+                            <span className="text-gray-400">-</span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </ProtectedRoute>
