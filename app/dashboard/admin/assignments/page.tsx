@@ -54,7 +54,7 @@ function AssignmentsManagement() {
   const [gradingSubmission, setGradingSubmission] = useState<Submission | null>(null);
   const [gradeData, setGradeData] = useState({ grade: 0, feedback: '' });
   const [uploading, setUploading] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = useState<{ name: string; url: string; fileName: string } | null>(null);
   const [formData, setFormData] = useState({ 
     title: '', 
     description: '', 
@@ -104,7 +104,6 @@ function AssignmentsManagement() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setSelectedFile(file);
     setUploading(true);
 
     try {
@@ -119,9 +118,10 @@ function AssignmentsManagement() {
 
       if (res.ok) {
         const data = await res.json();
-        setFormData({
-          ...formData,
-          fileUrl: data.fileUrl,
+        // Store uploaded file info separately, don't populate the external link field
+        setSelectedFile({
+          name: file.name,
+          url: data.fileUrl,
           fileName: data.fileName,
         });
       } else {
@@ -141,10 +141,17 @@ function AssignmentsManagement() {
   const handleAddAssignment = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      // Use uploaded file data if available, otherwise use external link
+      const submissionData = {
+        ...formData,
+        fileUrl: selectedFile ? selectedFile.url : formData.fileUrl,
+        fileName: selectedFile ? selectedFile.fileName : '',
+      };
+
       const res = await fetch('/api/assignments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submissionData),
       });
 
       if (res.ok) {
@@ -152,6 +159,9 @@ function AssignmentsManagement() {
         setFormData({ title: '', description: '', dueDate: '', courseId: '', fileUrl: '', fileName: '' });
         setSelectedFile(null);
         fetchData();
+      } else {
+        const error = await res.json();
+        alert(error.error || 'Failed to create assignment');
       }
     } catch (error) {
       console.error('Error adding assignment:', error);
@@ -233,17 +243,28 @@ function AssignmentsManagement() {
     if (!editingAssignment) return;
 
     try {
+      // Use uploaded file data if available, otherwise use form data
+      const submissionData = {
+        ...editFormData,
+        fileUrl: selectedFile ? selectedFile.url : editFormData.fileUrl,
+        fileName: selectedFile ? selectedFile.fileName : editFormData.fileName,
+      };
+
       const res = await fetch(`/api/assignments/${editingAssignment.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editFormData),
+        body: JSON.stringify(submissionData),
       });
 
       if (res.ok) {
         setShowEditModal(false);
         setEditingAssignment(null);
         setEditFormData({ title: '', description: '', dueDate: '', courseId: '', fileUrl: '', fileName: '' });
+        setSelectedFile(null);
         fetchData();
+      } else {
+        const error = await res.json();
+        alert(error.error || 'Failed to update assignment');
       }
     } catch (error) {
       console.error('Error updating assignment:', error);
@@ -612,9 +633,18 @@ function AssignmentsManagement() {
                         </p>
                       )}
                       {selectedFile && !uploading && (
-                        <p className="text-xs text-green-300 mt-2 flex items-center gap-2">
-                          <span>✓</span> {selectedFile.name} uploaded successfully (will replace current file)
-                        </p>
+                        <div className="mt-2 flex items-center justify-between bg-green-500/10 border border-green-400/30 rounded-lg p-3">
+                          <p className="text-xs text-green-300 flex items-center gap-2">
+                            <span>✓</span> {selectedFile.name} uploaded (will replace current file)
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedFile(null)}
+                            className="text-xs text-red-300 hover:text-red-200 underline"
+                          >
+                            Remove
+                          </button>
+                        </div>
                       )}
                     </div>
 
@@ -764,9 +794,18 @@ function AssignmentsManagement() {
                         </p>
                       )}
                       {selectedFile && !uploading && (
-                        <p className="text-xs text-green-300 mt-2 flex items-center gap-2">
-                          <span>✓</span> {selectedFile.name} uploaded successfully
-                        </p>
+                        <div className="mt-2 flex items-center justify-between bg-green-500/10 border border-green-400/30 rounded-lg p-3">
+                          <p className="text-xs text-green-300 flex items-center gap-2">
+                            <span>✓</span> {selectedFile.name} uploaded successfully
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedFile(null)}
+                            className="text-xs text-red-300 hover:text-red-200 underline"
+                          >
+                            Remove
+                          </button>
+                        </div>
                       )}
                     </div>
 

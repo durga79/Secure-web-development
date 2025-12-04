@@ -39,7 +39,7 @@ export const assignmentSchema = z.object({
   title: z.string().min(1).max(200),
   description: z.string().optional(),
   dueDate: z.string().optional(),
-  fileUrl: z.string().url().optional().or(z.literal('')),
+  fileUrl: z.string().optional().or(z.literal('')), // Allow both URLs and local paths
   fileName: z.string().optional(),
 });
 
